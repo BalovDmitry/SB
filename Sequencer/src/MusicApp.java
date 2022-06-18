@@ -1,13 +1,6 @@
 import javax.sound.midi.*;
 
 public class MusicApp {
-
-	public static void main(String[] args) {
-		MusicApp app = new MusicApp();
-		app.play();
-		return;
-	}
-
 	public void play()
 	{
 		try
@@ -34,7 +27,6 @@ public class MusicApp {
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
-		}
+		}	
 	}
-	
 }
