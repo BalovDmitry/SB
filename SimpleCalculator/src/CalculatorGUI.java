@@ -1,43 +1,53 @@
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class CalculatorGUI 
 {
 	private JFrame m_frame;
-	private JTextField m_textField;
-	private JPanel m_panel;
+	private JPanel m_digitPanel;
+	private JPanel m_operationPanel;
 	private JLabel m_label;
-	private ArrayList<JButton> m_buttons;
 	
 	private void InitFields()
 	{
 		m_frame = new JFrame();
-		m_textField = new JTextField();
-		m_panel = new JPanel();
+		m_digitPanel = new JPanel();
+		m_operationPanel = new JPanel();
 		m_label = new JLabel();
-		m_buttons = new ArrayList<JButton>();
-		m_label.setText("Hello world!");
-		m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	private void SetPanels(JPanel currentPanel, char buttonValues[])
+	{
+		for (char buttonValue : buttonValues)
+		{
+			JButton button = new JButton(String.valueOf(buttonValue));
+			button.addActionListener(new ButtonListener());
+			button.setSize(10, 10);
+			currentPanel.add(button);
+		}
 	}
 	
 	public CalculatorGUI()
 	{
 		InitFields();
+
+		char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+		char operations[] = {'+', '-', '*', '/', '='};
 		
-		m_frame.getContentPane().add(BorderLayout.CENTER, m_panel);
-		m_frame.getContentPane().add(BorderLayout.NORTH, m_textField);
-		m_frame.getContentPane().add(BorderLayout.WEST, m_label);
+		SetPanels(m_digitPanel, digits);
+		SetPanels(m_operationPanel, operations);
 		
-		for (int i = 0; i < 10; ++i)
-		{
-			m_buttons.add(new JButton(String.valueOf(i)));
-			m_buttons.get(i).addActionListener(new ButtonListener(i));
-			m_frame.getContentPane().add(BorderLayout.CENTER, m_buttons.get(i));
-		}
+		m_digitPanel.setLayout(new GridLayout(2, 5));
+		m_operationPanel.setLayout(new GridLayout(1, 5));
+		m_label.setText("<Your input>");
 		
+		m_frame.getContentPane().add(BorderLayout.CENTER, m_digitPanel);
+		m_frame.getContentPane().add(BorderLayout.SOUTH, m_operationPanel);
+		m_frame.getContentPane().add(BorderLayout.NORTH, m_label);
+		m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_frame.setSize(300, 300);
 	}
 	
@@ -49,17 +59,13 @@ public class CalculatorGUI
 	
 	class ButtonListener implements ActionListener
 	{
-		public ButtonListener(int number)
-		{
-			m_number = number;
-		}
-		
 		public void actionPerformed(ActionEvent e) 
 		{
-			m_label.setText(String.valueOf(m_number));
+			if (!e.getActionCommand().equals("="))
+			{
+				m_label.setText(e.getActionCommand());	
+			}
 		}
-		
-		private int m_number;
 	}
 	
 }
