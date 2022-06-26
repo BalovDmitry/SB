@@ -10,28 +10,18 @@ import javax.swing.*;
 
 public class CalculatorGUI 
 {
-	private JFrame m_frame;
-	private JPanel m_digitPanel;
-	private JPanel m_operationPanel;
-	private JLabel m_label;
-	private ArrayList<JButton> m_digitButtons;
-	private ArrayList<JButton> m_operationButtons;
+	private JFrame m_frame = new JFrame();
+	private JPanel m_digitPanel = new JPanel();
+	private JPanel m_operationPanel = new JPanel();
+	private JLabel m_label = new JLabel();
+	private ArrayList<JButton> m_digitButtons = new ArrayList<JButton>();
+	private ArrayList<JButton> m_operationButtons = new ArrayList<JButton>();
 	private boolean m_isOpInputPossible = false;
 	
 	private final LinkedHashSet<String> OPERATIONS = 
 			new LinkedHashSet<String>(Arrays.asList("+", "-", "*", "/", "="));
 	private final LinkedHashSet<String> DIGITS = 
 			new LinkedHashSet<String>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
-	
-	private void InitFields()
-	{
-		m_frame = new JFrame();
-		m_digitPanel = new JPanel();
-		m_operationPanel = new JPanel();
-		m_label = new JLabel();
-		m_digitButtons = new ArrayList<JButton>();
-		m_operationButtons = new ArrayList<JButton>();
-	}
 	
 	private void SetPanels(JPanel currentPanel, Set<String> buttonValues, ButtonTypes type)
 	{
@@ -69,9 +59,7 @@ public class CalculatorGUI
 	}
 	
 	public CalculatorGUI()
-	{
-		InitFields();
-		
+	{	
 		SetPanels(m_digitPanel, DIGITS, ButtonTypes.DIGIT);
 		SetPanels(m_operationPanel, OPERATIONS, ButtonTypes.OPERATION);
 		
