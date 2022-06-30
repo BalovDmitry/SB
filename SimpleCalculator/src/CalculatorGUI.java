@@ -14,6 +14,7 @@ public class CalculatorGUI
 	private JPanel m_digitPanel = new JPanel();
 	private JPanel m_operationPanel = new JPanel();
 	private JLabel m_label = new JLabel();
+	private StringBuffer m_buffer = new StringBuffer();
 	private ArrayList<JButton> m_digitButtons = new ArrayList<JButton>();
 	private ArrayList<JButton> m_operationButtons = new ArrayList<JButton>();
 	private boolean m_isOpInputPossible = false;
@@ -38,7 +39,6 @@ public class CalculatorGUI
 				}
 				case DIGIT:
 				{
-					
 					button.setEnabled(true);
 					m_digitButtons.add(button);
 					break;
@@ -91,7 +91,15 @@ public class CalculatorGUI
 			{
 				m_isOpInputPossible = false;
 			}
-			m_label.setText(e.getActionCommand());	
+			if (!e.getActionCommand().equals("="))
+			{
+				m_buffer.append(e.getActionCommand());
+			}
+			else
+			{
+				m_buffer.setLength(0);
+			}
+			m_label.setText(m_buffer.toString());	
 			ProcessButtonEnable();
 		}
 	}
