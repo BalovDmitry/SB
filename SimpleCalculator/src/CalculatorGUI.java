@@ -97,6 +97,7 @@ public class CalculatorGUI
 			}
 			else
 			{
+				
 				m_buffer.setLength(0);
 			}
 			m_label.setText(m_buffer.toString());	
