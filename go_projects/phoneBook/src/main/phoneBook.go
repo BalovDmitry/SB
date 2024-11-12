@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"path"
+	"strconv"
 )
 
 type Entry struct {
@@ -12,11 +14,20 @@ type Entry struct {
 	Tel     string
 }
 
-var data = []Entry{}
+var data []Entry
+
+const (
+	MIN              = 0
+	MAX              = 26
+	MIN_PHONE_NUMBER = 100
+	MAX_PHONE_NUMBER = 199
+	NAME_LENGTH      = 4
+	SURNAME_LENGTH   = 5
+)
 
 func search(key string) *Entry {
 	for i, v := range data {
-		if v.Surname == key {
+		if v.Tel == key {
 			return &data[i]
 		}
 	}
@@ -29,6 +40,35 @@ func list() {
 	}
 }
 
+func random(min, max int) int {
+	return rand.Intn(max-min) + min
+}
+
+func getString(l int64) string {
+	startChar := "A"
+	temp := ""
+	var i int64 = 1
+	for {
+		myRand := random(MIN, MAX)
+		newChar := string(startChar[0] + byte(myRand))
+		temp = temp + newChar
+		if i == l {
+			break
+		}
+		i++
+	}
+	return temp
+}
+
+func populate(n int) {
+	for i := 0; i < n; i++ {
+		name := getString(NAME_LENGTH)
+		surname := getString(SURNAME_LENGTH)
+		n := strconv.Itoa(random(MIN_PHONE_NUMBER, MAX_PHONE_NUMBER))
+		data = append(data, Entry{name, surname, n})
+	}
+}
+
 func main() {
 	arguments := os.Args
 	if len(arguments) == 1 {
@@ -37,10 +77,10 @@ func main() {
 		return
 	}
 
-	// Data initialization
-	data = append(data, Entry{"Mihalis", "Tsoukalos", "2109416471"})
-	data = append(data, Entry{"Mary", "Doe", "2109416471"})
-	data = append(data, Entry{"John", "Black", "2109416123"})
+	// How many records to insert
+	n := 100
+	populate(n)
+	fmt.Printf("Data has %d entries.\n", len(data))
 
 	switch arguments[1] {
 	case "search":
