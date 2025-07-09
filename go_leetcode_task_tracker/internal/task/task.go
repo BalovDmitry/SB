@@ -10,3 +10,9 @@ type Task struct {
 	Solution    string `json:"solution" validate:"required"`
 	Description string `json:"description" validate:"required"`
 }
+
+type TaskView struct {
+	IsSingle   bool
+	Tasks      []Task
+	TaskSingle Task
+}
