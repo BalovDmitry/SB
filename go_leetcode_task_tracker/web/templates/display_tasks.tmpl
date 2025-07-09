@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{if .IsSingle}}Task {{.Task.ID}}{{else}}Tasks List{{end}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .task-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .task-id {
+            font-size: 14px;
+            color: #666;
+        }
+        .task-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0;
+        }
+        .task-section {
+            margin-bottom: 15px;
+        }
+        .section-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+        .task-description, .task-solution {
+            white-space: pre-wrap;
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .back-link:hover {
+            background-color: #2980b9;
+        }
+        .empty-message {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{if .IsSingle}}Task Details{{else}}Tasks List{{end}}</h1>
+
+    {{if .IsSingle}}
+        {{template "task" .Task}}
+    {{else}}
+        {{if .Tasks}}
+            {{range .Tasks}}
+                {{template "task" .}}
+            {{end}}
+        {{else}}
+            <div class="empty-message">No tasks found</div>
+        {{end}}
+    {{end}}
+
+    <a href="/" class="back-link">Back to start page</a>
+</body>
+</html>
+
+{{define "task"}}
+<div class="task-card">
+    <div class="task-header">
+        <h2 class="task-name">{{.Name}}</h2>
+        <span class="task-id">ID: {{.ID}}</span>
+    </div>
+
+    <div class="task-section">
+        <div class="section-title">Description:</div>
+        <div class="task-description">{{.Description}}</div>
+    </div>
+
+    <div class="task-section">
+        <div class="section-title">Solution:</div>
+        <div class="task-solution">{{.Solution}}</div>
+    </div>
+</div>
+{{end}}
