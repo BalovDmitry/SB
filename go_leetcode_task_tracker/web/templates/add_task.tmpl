@@ -121,7 +121,14 @@
                 <textarea id="solution" name="solution" required></textarea>
             </div>
 
-            <button type="submit">Add Solved Task</button>
+            <div class="buttons-container">
+                <button type="submit">Add Solved Task</button>
+                <button class="btn" onclick="window.location.href='/'">Back to start page</button>
+            </div>
+
+            <div class="button-container">
+                <button id="homeButton" onclick="window.location.href='/'">Go to start page</button>
+            </div>
         </form>
 
         <div id="statusMessage"></div>
@@ -134,7 +141,7 @@
         document.getElementById('taskForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const taskId = document.getElementById('taskId').value;
+            const taskId = parseInt(document.getElementById('taskId').value);
             const taskName = document.getElementById('taskName').value;
             const description = document.getElementById('description').value;
             const solution = document.getElementById('solution').value;
@@ -144,6 +151,14 @@
 
             statusMessage.style.display = 'none';
             homeButton.style.display = 'none';
+
+            // Проверяем, что taskId - валидное число
+            if (isNaN(taskId) || taskId < 1) {
+                statusMessage.textContent = 'Error: Please enter a valid task ID (positive number)';
+                statusMessage.className = 'error';
+                statusMessage.style.display = 'block';
+                return;
+            }
 
             try {
                 const response = await fetch(`/tasks/post/${taskId}`, {
@@ -163,8 +178,8 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const data = await response.json();
-                console.log('Success:', data);
+                //const data = await response.json();
+                //console.log('Success:', data);
 
                 statusMessage.textContent = 'Task successfully added!';
                 statusMessage.className = 'success';
