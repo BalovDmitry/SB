@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{if .IsSingle}}Task {{.Task.ID}}{{else}}Tasks List{{end}}</title>
+    <title>{{if .IsSingle}}Task {{.Task.Id}}{{else}}Tasks List{{end}}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -97,7 +97,12 @@
 <div class="task-card">
     <div class="task-header">
         <h2 class="task-name">{{.Name}}</h2>
-        <span class="task-id">ID: {{.ID}}</span>
+        <span class="task-id">ID: {{.Id}}</span>
+    </div>
+
+    <div class="task-section">
+        <div class="section-title">Time:</div>
+        <div class="task-time">{{.UpdateTime}}</div>
     </div>
 
     <div class="task-section">

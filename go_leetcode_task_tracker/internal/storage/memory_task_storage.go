@@ -10,8 +10,9 @@ type MemoryTaskStorage struct {
 	tasks map[int]task.Task
 }
 
-func (s *MemoryTaskStorage) Init() {
+func (s *MemoryTaskStorage) Init() error {
 	s.tasks = make(map[int]task.Task)
+	return nil
 }
 
 func (s *MemoryTaskStorage) AddTask(task task.Task) error {
@@ -20,7 +21,7 @@ func (s *MemoryTaskStorage) AddTask(task task.Task) error {
 	}
 
 	task.Completed = true
-	task.UpdateTime = time.Now()
+	task.UpdateTime = time.Now().Format(time.DateTime)
 	s.tasks[task.Id] = task
 	return nil
 }
@@ -43,7 +44,7 @@ func (s *MemoryTaskStorage) UpdateTask(task task.Task) error {
 	}
 
 	taskToUpdate := s.tasks[task.Id]
-	taskToUpdate.UpdateTime = time.Now()
+	task.UpdateTime = time.Now().Format(time.DateTime)
 	taskToUpdate.Solution = task.Solution
 
 	s.tasks[task.Id] = taskToUpdate
