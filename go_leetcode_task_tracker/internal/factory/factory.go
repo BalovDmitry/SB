@@ -11,19 +11,19 @@ const (
 	MemoryStorage StorageType = iota
 )
 
-func CreateStorage(storageType StorageType) storage.TaskStorage {
+func CreateStorage(storageType StorageType) storage.SolutionStorage {
 	switch storageType {
 	case MemoryStorage:
-		return &storage.MemoryTaskStorage{}
+		return &storage.MemoryStorage{}
 	default:
 		return nil
 	}
 }
 
-func CreateHandler(s storage.TaskStorage) handler.BaseHandler {
+func CreateHandler(s storage.SolutionStorage) handler.BaseHandler {
 	switch s.(type) {
-	case *storage.MemoryTaskStorage:
-		return &handler.TaskStorageHandler{}
+	case *storage.MemoryStorage:
+		return &handler.SolutionStorageHandler{}
 	default:
 		return nil
 	}

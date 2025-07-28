@@ -2,7 +2,7 @@ package storage
 
 import "leetcode_task_tracker/internal/task"
 
-type TaskStorage interface {
+type SolutionStorage interface {
 	Init() error
 	AddTask(task task.Task) error
 	GetTask(id int) (task.Task, error)

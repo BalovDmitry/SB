@@ -6,16 +6,16 @@ import (
 	"time"
 )
 
-type MemoryTaskStorage struct {
+type MemoryStorage struct {
 	tasks map[int]task.Task
 }
 
-func (s *MemoryTaskStorage) Init() error {
+func (s *MemoryStorage) Init() error {
 	s.tasks = make(map[int]task.Task)
 	return nil
 }
 
-func (s *MemoryTaskStorage) AddTask(task task.Task) error {
+func (s *MemoryStorage) AddTask(task task.Task) error {
 	if _, found := s.tasks[task.Id]; found {
 		return custom_errors.TaskExistsError{}
 	}
@@ -26,7 +26,7 @@ func (s *MemoryTaskStorage) AddTask(task task.Task) error {
 	return nil
 }
 
-func (s *MemoryTaskStorage) GetTask(id int) (task.Task, error) {
+func (s *MemoryStorage) GetTask(id int) (task.Task, error) {
 	if _, found := s.tasks[id]; !found {
 		return task.Task{}, custom_errors.TaskNotFoundError{}
 	}
@@ -34,11 +34,11 @@ func (s *MemoryTaskStorage) GetTask(id int) (task.Task, error) {
 	return s.tasks[id], nil
 }
 
-func (s *MemoryTaskStorage) GetAllTasks() map[int]task.Task {
+func (s *MemoryStorage) GetAllTasks() map[int]task.Task {
 	return s.tasks
 }
 
-func (s *MemoryTaskStorage) UpdateTask(task task.Task) error {
+func (s *MemoryStorage) UpdateTask(task task.Task) error {
 	if _, found := s.tasks[task.Id]; !found {
 		return custom_errors.TaskNotFoundError{}
 	}
@@ -51,7 +51,7 @@ func (s *MemoryTaskStorage) UpdateTask(task task.Task) error {
 	return nil
 }
 
-func (s *MemoryTaskStorage) RemoveTask(id int) error {
+func (s *MemoryStorage) RemoveTask(id int) error {
 	if _, found := s.tasks[id]; !found {
 		return custom_errors.TaskNotFoundError{}
 	}
