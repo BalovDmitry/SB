@@ -7,6 +7,7 @@ type Task struct {
 	Name        string `json:"name" validate:"required"`
 	Solution    string `json:"solution" validate:"required"`
 	Description string `json:"description" validate:"required"`
+	Language    string `json:"language" validate:"required"`
 }
 
 type View struct {
