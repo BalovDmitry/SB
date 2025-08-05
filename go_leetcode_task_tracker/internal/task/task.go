@@ -10,7 +10,7 @@ type Task struct {
 	Language    string `json:"language" validate:"required"`
 }
 
-type View struct {
+type TaskView struct {
 	IsSingle   bool
 	Tasks      []Task
 	TaskSingle Task

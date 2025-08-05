@@ -4,9 +4,10 @@ import "leetcode_task_tracker/internal/task"
 
 type SolutionStorage interface {
 	Init() error
-	AddTask(task task.Task) error
-	GetTask(id int) (task.Task, error)
-	GetAllTasks() map[int]task.Task
-	UpdateTask(task task.Task) error
-	RemoveTask(id int) error
+	Initialized() bool
+	AddSolution(t task.Task) error
+	GetSolutions(id int) (task.Solutions, error)
+	GetAllSolutions() map[int]task.Solutions
+	UpdateSolution(t task.Task) error
+	RemoveSolution(id int) error
 }

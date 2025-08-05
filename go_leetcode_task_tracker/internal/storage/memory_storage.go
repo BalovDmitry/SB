@@ -7,55 +7,74 @@ import (
 )
 
 type MemoryStorage struct {
-	tasks map[int]task.Task
+	solutions   map[int]task.Solutions
+	initialized bool
 }
 
 func (s *MemoryStorage) Init() error {
-	s.tasks = make(map[int]task.Task)
+	s.solutions = make(map[int]task.Solutions)
+	s.initialized = true
 	return nil
 }
 
-func (s *MemoryStorage) AddTask(task task.Task) error {
-	if _, found := s.tasks[task.Id]; found {
+func (s *MemoryStorage) Initialized() bool {
+	return s.initialized
+}
+
+func (s *MemoryStorage) AddSolution(t task.Task) error {
+	if _, found := s.solutions[t.Id]; found {
 		return custom_errors.TaskExistsError{}
 	}
 
-	task.Completed = true
-	task.UpdateTime = time.Now().Format(time.DateTime)
-	s.tasks[task.Id] = task
+	solutions := task.Solutions{}
+	solutions.Id = t.Id
+	solutions.Description = t.Description
+	solutions.Name = t.Name
+
+	solutions.LanguageToSolution = make(map[string]task.Solution)
+	solutions.LanguageToSolution[t.Language] =
+		task.Solution{UpdateTime: time.Now().Format(time.DateTime), Value: t.Solution}
+
+	s.solutions[t.Id] = solutions
 	return nil
 }
 
-func (s *MemoryStorage) GetTask(id int) (task.Task, error) {
-	if _, found := s.tasks[id]; !found {
-		return task.Task{}, custom_errors.TaskNotFoundError{}
+func (s *MemoryStorage) GetSolutions(id int) (task.Solutions, error) {
+	if _, found := s.solutions[id]; !found {
+		return task.Solutions{}, custom_errors.TaskNotFoundError{}
 	}
 
-	return s.tasks[id], nil
+	return s.solutions[id], nil
 }
 
-func (s *MemoryStorage) GetAllTasks() map[int]task.Task {
-	return s.tasks
+func (s *MemoryStorage) GetAllSolutions() map[int]task.Solutions {
+	return s.solutions
 }
 
-func (s *MemoryStorage) UpdateTask(task task.Task) error {
-	if _, found := s.tasks[task.Id]; !found {
+func (s *MemoryStorage) UpdateSolution(t task.Task) error {
+	if _, found := s.solutions[t.Id]; !found {
 		return custom_errors.TaskNotFoundError{}
 	}
 
-	taskToUpdate := s.tasks[task.Id]
-	task.UpdateTime = time.Now().Format(time.DateTime)
-	taskToUpdate.Solution = task.Solution
+	solutionToUpdate := s.solutions[t.Id]
+	if val, found := solutionToUpdate.LanguageToSolution[t.Language]; found {
+		val.UpdateTime = time.Now().Format(time.DateTime)
+		val.Value = t.Solution
+		solutionToUpdate.LanguageToSolution[t.Language] = val
+	} else {
+		solutionToUpdate.LanguageToSolution[t.Language] =
+			task.Solution{UpdateTime: time.Now().Format(time.DateTime), Value: t.Solution}
+	}
 
-	s.tasks[task.Id] = taskToUpdate
+	s.solutions[t.Id] = solutionToUpdate
 	return nil
 }
 
-func (s *MemoryStorage) RemoveTask(id int) error {
-	if _, found := s.tasks[id]; !found {
+func (s *MemoryStorage) RemoveSolution(id int) error {
+	if _, found := s.solutions[id]; !found {
 		return custom_errors.TaskNotFoundError{}
 	}
 
-	delete(s.tasks, id)
+	delete(s.solutions, id)
 	return nil
 }
