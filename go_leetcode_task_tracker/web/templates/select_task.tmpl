@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .selection-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        select, .method-buttons {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .method-buttons {
+            display: flex;
+            padding: 0;
+            overflow: hidden;
+        }
+        .method-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background-color: #f1f1f1;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .method-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        .method-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        .method-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .method-btn:hover:not(.active) {
+            background-color: #ddd;
+        }
+        .select-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #cccccc;
+            color: #666666;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: not-allowed;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        .select-btn.active {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .select-btn.active:hover {
+            background-color: #45a049;
+        }
+        .start-page-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .start-page-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select task</h1>
+
+    <div class="selection-container">
+        <div class="form-group">
+            <label for="task-select">Task ID:</label>
+            <select id="task-select" class="task-select">
+                <option value="">-- Select a task --</option>
+                {{range .Solutions}}
+                <option value="{{.Id}}">{{.Id}}</option>
+                {{end}}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Method:</label>
+            <div class="method-buttons">
+                <button class="method-btn active" data-method="GET">GET</button>
+                <button class="method-btn" data-method="UPDATE">UPDATE</button>
+                <button class="method-btn" data-method="DELETE">DELETE</button>
+            </div>
+        </div>
+
+        <button id="select-btn" class="select-btn">Select</button>
+    </div>
+
+    <a href="/" class="start-page-btn">Go to start page</a>
+
+    <script>
+        const taskSelect = document.getElementById('task-select');
+        const selectBtn = document.getElementById('select-btn');
+        const methodBtns = document.querySelectorAll('.method-btn');
+        let selectedMethod = 'GET';
+
+        // Handle task selection change
+        taskSelect.addEventListener('change', function() {
+            if (this.value) {
+                selectBtn.classList.add('active');
+            } else {
+                selectBtn.classList.remove('active');
+            }
+        });
+
+        // Handle method selection
+        methodBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                methodBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedMethod = this.dataset.method;
+            });
+        });
+
+        // Handle select button click
+        selectBtn.addEventListener('click', function() {
+            if (!this.classList.contains('active')) return;
+
+            const taskId = taskSelect.value;
+            if (!taskId) return;
+
+            // Convert method to lowercase for the URL
+            const method = selectedMethod.toLowerCase();
+            window.location.href = `/tasks/select/${method}/${taskId}`;
+        });
+    </script>
+</body>
+</html>
